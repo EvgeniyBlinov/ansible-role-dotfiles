@@ -1,0 +1,10 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Evgeniy Blinov
+  description: dotfiles
+  license: "license (MIT)"
+  min_ansible_version: '2.4'
+  galaxy_tags:
+    - dotfiles

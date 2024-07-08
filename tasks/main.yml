@@ -1,0 +1,38 @@
+---
+- name: Create a dotfiles root directory
+  ansible.builtin.file:
+    path: "{{ dotfiles__repo_path | dirname }}"
+    state: directory
+    mode: '0755'
+
+- name: Clone dotfiles repo
+  ansible.builtin.git:
+    repo: "{{ dotfiles__repo }}"
+    dest: "{{ dotfiles__repo_path }}"
+    update: yes
+    version: "{{ dotfiles__repo_version }}"
+
+  ## find ./ -maxdepth 1 -type f -iname '.*stow*'
+- name: Find stow configs
+  ansible.builtin.find:
+    paths: "{{ dotfiles__repo_path }}"
+    hidden: true
+    file_type: file
+    depth: 1
+    patterns: '.*stow*'
+  register: _dotfiles__installer__stow_configs
+
+- name: Ensure stow package is exists
+  ansible.builtin.package:
+    name: stow
+    state: present
+  when: _dotfiles__installer__stow_configs.matched == 1
+
+- name: Run make install
+  ansible.builtin.shell:
+    cmd: >-
+      make install
+  args:
+    chdir: "{{ dotfiles__repo_path }}"
+  tags:
+    - installer

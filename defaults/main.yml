@@ -1,0 +1,4 @@
+---
+dotfiles__repo: 'https://github.com/EvgeniyBlinov/dotfiles-server.git'
+dotfiles__repo_path: ~/PROJECTS/src/dotfiles-server
+dotfiles__repo_version: main
